@@ -1,0 +1,56 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class URLShortener {
+
+    private Map<String, String> urlMappings;
+
+    public URLShortener() {
+        this.urlMappings = new HashMap<>();
+    }
+
+    public String shortenURL(String longURL) {
+        if (urlMappings.containsValue(longURL)) {
+            System.out.println("Error: Duplicate long URL.");
+            return null;
+        }
+
+        String shortURL = generateShortURL(longURL);
+        urlMappings.put(shortURL, longURL);
+        return shortURL;
+    }
+
+    public String expandURL(String shortURL) {
+        if (!urlMappings.containsKey(shortURL)) {
+            System.out.println("Error: Invalid short URL.");
+            return null;
+        }
+
+        return urlMappings.get(shortURL);
+    }
+
+    private String generateShortURL(String longURL) {
+        // Simple hash function for demonstration purposes
+        return Integer.toHexString(longURL.hashCode());
+    }
+
+    public static void main(String[] args) {
+        URLShortener urlShortener = new URLShortener();
+
+        // Example Usage
+        String longURL = "https://www.example.com";
+        String shortURL = urlShortener.shortenURL(longURL);
+
+        if (shortURL != null) {
+            System.out.println("Shortened URL: " + shortURL);
+
+            // Simulate persisting data between sessions
+            // (You might want to use a database in a real-world scenario)
+            // ...
+
+            // Expand the shortened URL
+            String expandedURL = urlShortener.expandURL(shortURL);
+            System.out.println("Expanded URL: " + expandedURL);
+        }
+    }
+}
